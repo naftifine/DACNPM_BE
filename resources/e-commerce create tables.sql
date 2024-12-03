@@ -1,0 +1,22 @@
+﻿CREATE TABLE [user] (
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
+    CCCD VARCHAR(12) UNIQUE,
+    Username NVARCHAR(255) UNIQUE NOT NULL,
+    Passw NVARCHAR(100) NOT NULL,
+    DateOfBirth DATE,
+    Fullname NVARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(16),
+    CONSTRAINT CK_CCCD CHECK (LEN(CCCD) = 12), 
+    CONSTRAINT CK_PhoneNumber CHECK (LEN(PhoneNumber) >= 10) 
+);
+CREATE TABLE [store] (
+    StoreID INT IDENTITY(1,1) PRIMARY KEY,
+    PolicyInfor VARCHAR(MAX),
+    Introduction VARCHAR(MAX),
+    QuanitySold INT DEFAULT 0,
+    QuantityOfGoods INT DEFAULT 0,
+    ST_UserID INT UNIQUE,
+    CONSTRAINT CK_Store_User FOREIGN KEY (ST_UserID) REFERENCES [User](UserID)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
