@@ -9,8 +9,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
-    "mssql": "^11.0.1"
+    "mssql": "^11.0.1",
+    "rand-token": "^1.0.1"
   }
 }
