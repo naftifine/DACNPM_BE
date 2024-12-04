@@ -6,9 +6,10 @@ exports.getUser = async (username) => {
         const pool = await db(); 
         const result = await pool.request()
             .input('Username', sql.NVarChar, username)
-            .query('SELECT Username FROM users WHERE Username = @Username');
+            .query('SELECT * FROM users WHERE Username = @Username');
         if (result.recordset.length > 0) {
-            return result.recordset[0].Username; 
+            // console.log(result.recordset[0]);
+            return result.recordset[0]; 
         } else {
             return null; 
         }
@@ -39,3 +40,27 @@ exports.createUser = async (newUser) => {
 		return false;
 	}
 }
+
+
+exports.updateRefreshToken = async (username, refreshToken) => {
+    try {
+        const pool = await db(); 
+        const result = await pool.request()
+            .input('Username', sql.NVarChar, username)
+            .input('RefreshToken', sql.VarChar, refreshToken)
+            .query(`
+                UPDATE users
+                SET refresh_token = @RefreshToken
+                WHERE Username = @Username
+            `);
+        
+        if (result.rowsAffected[0] > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+    } catch (error) {
+        console.error('Error in updateRefreshToken:', error);
+        return false;
+    }
+};

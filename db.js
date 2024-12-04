@@ -15,7 +15,7 @@ const config = {
 async function db() {
     try {
         const pool = await sql.connect(config);
-        console.log('Kết nối SQL Server thành công.');
+        // console.log('Kết nối SQL Server thành công.');
         return pool; 
     } 
     catch (err) {
