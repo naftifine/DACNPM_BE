@@ -8,8 +8,13 @@ exports.getUser = async (username) => {
             .input('Username', sql.NVarChar, username)
             .query('SELECT * FROM users WHERE Username = @Username');
         if (result.recordset.length > 0) {
-            // console.log(result.recordset[0]);
-            return result.recordset[0]; 
+            const user = result.recordset[0];
+            
+            if (user.DateOfBirth) {
+                user.DateOfBirth = new Date(user.DateOfBirth).toISOString().split('T')[0];
+            }
+            
+            return user; 
         } else {
             return null; 
         }

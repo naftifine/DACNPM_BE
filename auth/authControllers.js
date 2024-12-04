@@ -66,7 +66,7 @@ exports.login = async (req, res) => {
 
 	let refreshToken = randToken.generate(64);
 
-	console.log(user.refresh_token);
+	// console.log(user.refresh_token);
 	if (!user.refresh_token) {
 		await userModel.updateRefreshToken(user.Username, refreshToken);
 	} else {
