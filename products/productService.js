@@ -1,25 +1,18 @@
 const productModel = require('./productModel');
 
-const productService = {
-    getAllProducts: async () => {
-        return await productModel.getAllProducts();
-    },
 
-    getProductsByCategory: async (categoryID) => {
-        return await productModel.getProductsByCategory(categoryID);
-    },
-
-    addProduct: async (productName, categoryID) => {
-        return await productModel.addProduct(productName, categoryID);
-    },
-
-    deleteProduct: async (productID) => {
-        const rowsAffected = await productModel.deleteProduct(productID);
-        if (rowsAffected === 0) {
-            throw new Error('Product not found');
-        }
-        return true;
-    },
+exports.getAllProducts = async () => {
+    return await productModel.getAllProducts();
+};
+exports.addProduct = async (data) => {
+    return await productModel.addProduct(data);
+};
+exports.updateProduct = async (ProductID, data) => {
+    if(!productModel.checkProductExists(ProductID)) {return null;}
+    return await productModel.updateProduct(ProductID, data);
+} 
+exports.deleteProduct = async (productID) => {
+    if(!productModel.checkProductExists(productID)) {return null;}
+    return await productModel.deleteProduct(productID);
 };
 
-module.exports = productService;
