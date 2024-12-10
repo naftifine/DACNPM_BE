@@ -69,3 +69,30 @@ exports.updateRefreshToken = async (username, refreshToken) => {
         return false;
     }
 };
+
+exports.editUser = async (user) => {
+    try {
+        const pool = await db();
+        const result = await pool.request()
+            .input('username', user.username)
+            .input('password', user.password)
+            .input('dateofbirth', user.dateofbirth + 'T00:00:00Z')
+            .input('fullname', user.fullname)
+            .input('phonenumber', user.phonenumber)
+            .query(`
+                UPDATE [users]
+                SET password = @password,
+                    dateofbirth = @dateofbirth,
+                    fullname = @fullName,
+                    phonenumber = @phonenumber
+                WHERE username = @username
+            `);
+        if (result.rowsAffected[0] === 0) {
+            throw new Error('User không tồn tại');
+        }
+        return result;
+    }
+    catch (error) {
+        throw new Error('Error updating user: ' + error.message);
+    }
+}
