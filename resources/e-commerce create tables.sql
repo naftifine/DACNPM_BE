@@ -99,3 +99,12 @@ CREATE TABLE Admin (
 );
 
 
+CREATE TABLE Messages (
+    Mess_ID INT IDENTITY(1,1) PRIMARY KEY,
+    Date_Send DATETIME NOT NULL,
+    Content NVARCHAR(MAX) NOT NULL,
+    SenderID INT NULL,
+    ReceiverID INT NULL,
+    FOREIGN KEY (SenderID) REFERENCES [users](UserID),
+    FOREIGN KEY (ReceiverID) REFERENCES [users](UserID)
+);
