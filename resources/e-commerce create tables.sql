@@ -2,7 +2,7 @@
     UserID INT IDENTITY(1,1) PRIMARY KEY,
     CCCD VARCHAR(12) UNIQUE,
     Username NVARCHAR(255) UNIQUE NOT NULL,
-    Passw NVARCHAR(100) NOT NULL,
+    password NVARCHAR(100) NOT NULL,
     DateOfBirth DATE,
     Fullname NVARCHAR(100) NOT NULL,
     PhoneNumber VARCHAR(16),
