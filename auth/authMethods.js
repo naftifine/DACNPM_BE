@@ -33,7 +33,7 @@ exports.generateToken = async (payload, secretSignature, tokenLife) => {
 exports.decodeToken = async (token, secretKey) => {
 	try {
 		return await verify(token, secretKey, {
-			ignoreExpiration: false,
+			ignoreExpiration: true,
 		});
 	} catch (error) {
 		console.log(`Error in decode access token: ${error}`);
