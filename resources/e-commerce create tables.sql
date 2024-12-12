@@ -8,6 +8,7 @@
     phonenumber VARCHAR(16),
     CONSTRAINT CK_CCCD CHECK (LEN(cccd) = 12), 
     CONSTRAINT CK_phonenumber CHECK (LEN(phonenumber) >= 10),
+    -- image NVARCHAR(255),
     refresh_token VARCHAR(255) NULL
 );
 CREATE TABLE [store] (
@@ -23,26 +24,40 @@ CREATE TABLE [store] (
 
 
 CREATE TABLE Category (
-    CategoryID INT IDENTITY(1,1) PRIMARY KEY,
-    CName NVARCHAR(100) UNIQUE NOT NULL,
-    Cate_Descr NVARCHAR(MAX),
+    categoryid INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(100) UNIQUE NOT NULL,
+    -- Cate_Descr NVARCHAR(MAX),
     Image NVARCHAR(MAX) 
 );
 
-CREATE TABLE Products (
-    ProductID INT IDENTITY(1,1) PRIMARY KEY,
-    PName NVARCHAR(100) NOT NULL,
-    SellPrice INT NOT NULL,
-    Pr_Descr NVARCHAR(MAX),
-    Amount INT DEFAULT 0,
-    TimeUpload DATETIME NOT NULL,
-    ImagePd NVARCHAR(MAX), 
-    Attribute NVARCHAR(MAX), 
-    StatusPro NVARCHAR(10) CHECK (StatusPro IN ('ForSale', 'Sold', 'Deleted')) NOT NULL,
-    SellerID INT NOT NULL,
-    PC_ID INT,
-    FOREIGN KEY (SellerID) REFERENCES [users](UserID) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY (PC_ID) REFERENCES Category(CategoryID) ON DELETE NO ACTION ON UPDATE CASCADE
+-- CREATE TABLE Products (
+--     ProductID INT IDENTITY(1,1) PRIMARY KEY,
+--     PName NVARCHAR(100) NOT NULL,
+--     SellPrice INT NOT NULL,
+--     Pr_Descr NVARCHAR(MAX),
+--     Amount INT DEFAULT 0,
+--     TimeUpload DATETIME NOT NULL,
+--     ImagePd NVARCHAR(MAX), 
+--     Attribute NVARCHAR(MAX), 
+--     StatusPro NVARCHAR(10) CHECK (StatusPro IN ('ForSale', 'Sold', 'Deleted')) NOT NULL,
+--     SellerID INT NOT NULL,
+--     PC_ID INT,
+--     FOREIGN KEY (SellerID) REFERENCES [users](UserID) ON DELETE NO ACTION ON UPDATE CASCADE,
+--     FOREIGN KEY (PC_ID) REFERENCES Category(CategoryID) ON DELETE NO ACTION ON UPDATE CASCADE
+-- );
+
+CREATE TABLE [products] (
+    productid INT IDENTITY(1,1) PRIMARY KEY,
+    categoryid INT NOT NULL,
+    name NVARCHAR(255) NOT NULL,
+    description NVARCHAR(255),
+    price INT NOT NULL,
+    location NVARCHAR(255) NOT NULL,
+    remaining_amount INT DEFAULT 0,
+    approved NVARCHAR(255) CHECK (approved IN ('accepted', 'pending', 'rejected')) NOT NULL,
+    discount INT DEFAULT 0,
+    image NVARCHAR(255),
+    FOREIGN KEY (categoryid) REFERENCES [Category](categoryid) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE TABLE Review (

@@ -7,7 +7,7 @@ const randToken = require('rand-token');
 const SALT_ROUNDS = 10;
 
 exports.register = async (req, res) => {
-	const username = req.body.username.toLowerCase();
+	const username = req.body.username;
 	const user = await userModel.getUser(username);
 	if (user) res.status(409).send('Tên tài khoản đã tồn tại.');
 	else {

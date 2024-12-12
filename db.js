@@ -2,8 +2,8 @@ const sql = require('mssql');
 
 const config = {
     user: 'sa',      // Tên người dùng SQL Server
-    password: 'Tung2303',  // Mật khẩu SQL Server
-    server: 'TUNG-DESKTOP230',        // SQL Server host
+    password: '123',  // Mật khẩu SQL Server
+    server: 'NAFTIFINE',        // SQL Server host
     database: 'e_commerce',  // Tên cơ sở dữ liệu
     options: {
         encrypt: false,           // Đặt true nếu bạn dùng Azure hoặc cần mã hóa
@@ -14,8 +14,8 @@ const config = {
 
 async function db() {
     try {
-        const pool = await sql.connect(config);  
-        console.log('Kết nối SQL Server thành công.');
+        const pool = await sql.connect(config);
+        // console.log('Kết nối SQL Server thành công.');
         return pool; 
     } 
     catch (err) {
@@ -23,7 +23,6 @@ async function db() {
         throw err;
   }
 }
-
 
 module.exports = {
   db,

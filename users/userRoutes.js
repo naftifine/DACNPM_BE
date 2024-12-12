@@ -7,9 +7,7 @@ const authMiddleware = require('../auth/authMiddlewares');
 const isAuth = authMiddleware.isAuth;
 
 
-router.get('/profile', isAuth, userController.getUserByUsername);
-// router.get('/profile', isAuth, userController.getUser);
-
-router.post('/profile', isAuth, userController.editUserByUsername);
+router.post('/profile', isAuth, userController.getUserByUsername);
+router.post('/edit', isAuth, userController.editUserByUsername);
 
 module.exports = router;
