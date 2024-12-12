@@ -49,6 +49,7 @@ CREATE TABLE Category (
 CREATE TABLE [products] (
     productid INT IDENTITY(1,1) PRIMARY KEY,
     categoryid INT NOT NULL,
+    username INT NOT NULL,
     name NVARCHAR(255) NOT NULL,
     description NVARCHAR(255),
     price INT NOT NULL,
@@ -57,7 +58,8 @@ CREATE TABLE [products] (
     approved NVARCHAR(255) CHECK (approved IN ('accepted', 'pending', 'rejected')) NOT NULL,
     discount INT DEFAULT 0,
     image NVARCHAR(255),
-    FOREIGN KEY (categoryid) REFERENCES [Category](categoryid) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (categoryid) REFERENCES [Category](categoryid) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY (username) REFERENCES [users](username) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Review (
