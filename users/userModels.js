@@ -29,15 +29,15 @@ exports.createUser = async (newUser) => {
         console.log(newUser);
 		const result = await pool.request()
 			.input('Username', sql.NVarChar, newUser.username)
-			.input('Passw', sql.NVarChar, newUser.password)
+			.input('password', sql.NVarChar, newUser.password)
 			.input('CCCD', sql.VarChar, newUser.cccd)
 			.input('DateOfBirth', sql.Date, newUser.DateOfBirth)
             .input('Fullname', sql.NVarChar, newUser.Fullname)
             .input('PhoneNumber', sql.NVarChar, newUser.PhoneNumber)
             .input('refresh_token', sql.NVarChar, null)
 			.query(`
-                INSERT INTO users (Username, Passw, CCCD, DateOfBirth, Fullname, PhoneNumber, refresh_token)
-                VALUES (@Username, @Passw, @CCCD, @DateOfBirth, @Fullname, @PhoneNumber, @refresh_token)
+                INSERT INTO users (Username, password, CCCD, DateOfBirth, Fullname, PhoneNumber, refresh_token)
+                VALUES (@Username, @password, @CCCD, @DateOfBirth, @Fullname, @PhoneNumber, @refresh_token)
             `);
 		return result.rowsAffected > 0;
 	} catch (error) {
@@ -69,3 +69,30 @@ exports.updateRefreshToken = async (username, refreshToken) => {
         return false;
     }
 };
+
+exports.editUser = async (user) => {
+    try {
+        const pool = await db();
+        const result = await pool.request()
+            .input('username', user.username)
+            .input('password', user.password)
+            .input('dateofbirth', user.dateofbirth + 'T00:00:00Z')
+            .input('fullname', user.fullname)
+            .input('phonenumber', user.phonenumber)
+            .query(`
+                UPDATE [users]
+                SET password = @password,
+                    dateofbirth = @dateofbirth,
+                    fullname = @fullName,
+                    phonenumber = @phonenumber
+                WHERE username = @username
+            `);
+        if (result.rowsAffected[0] === 0) {
+            throw new Error('User không tồn tại');
+        }
+        return result;
+    }
+    catch (error) {
+        throw new Error('Error updating user: ' + error.message);
+    }
+}

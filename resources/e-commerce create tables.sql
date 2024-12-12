@@ -1,13 +1,13 @@
 ﻿CREATE TABLE [users] (
-    UserID INT IDENTITY(1,1) PRIMARY KEY,
-    CCCD VARCHAR(12) UNIQUE,
-    Username NVARCHAR(255) UNIQUE NOT NULL,
-    Passw NVARCHAR(100) NOT NULL,
-    DateOfBirth DATE,
-    Fullname NVARCHAR(100) NOT NULL,
-    PhoneNumber VARCHAR(16),
-    CONSTRAINT CK_CCCD CHECK (LEN(CCCD) = 12), 
-    CONSTRAINT CK_PhoneNumber CHECK (LEN(PhoneNumber) >= 10),
+    userid INT IDENTITY(1,1) PRIMARY KEY,
+    cccd VARCHAR(12) UNIQUE,
+    username NVARCHAR(255) UNIQUE NOT NULL,
+    password NVARCHAR(100) NOT NULL,
+    dateofbirth DATE,
+    fullname NVARCHAR(100) NOT NULL,
+    phonenumber VARCHAR(16),
+    CONSTRAINT CK_CCCD CHECK (LEN(cccd) = 12), 
+    CONSTRAINT CK_phonenumber CHECK (LEN(phonenumber) >= 10),
     refresh_token VARCHAR(255) NULL
 );
 CREATE TABLE [store] (
@@ -26,7 +26,7 @@ CREATE TABLE Category (
     CategoryID INT IDENTITY(1,1) PRIMARY KEY,
     CName NVARCHAR(100) UNIQUE NOT NULL,
     Cate_Descr NVARCHAR(MAX),
-    Image NVARCHAR(MAX) -- sql k có json
+    Image NVARCHAR(MAX) 
 );
 
 CREATE TABLE Products (
@@ -96,8 +96,18 @@ CREATE TABLE Article (
 );
 
 CREATE TABLE Admin (
-    Username NVARCHAR(255) PRIMARY KEY,
-    Passw NVARCHAR(100) NOT NULL
+    username NVARCHAR(255) PRIMARY KEY,
+    password NVARCHAR(100) NOT NULL,
+    refresh_token NVARCHAR(255) NULL
 );
 
 
+CREATE TABLE Messages (
+    Mess_ID INT IDENTITY(1,1) PRIMARY KEY,
+    Date_Send DATETIME NOT NULL,
+    Content NVARCHAR(MAX) NOT NULL,
+    SenderID INT NULL,
+    ReceiverID INT NULL,
+    FOREIGN KEY (SenderID) REFERENCES [users](UserID),
+    FOREIGN KEY (ReceiverID) REFERENCES [users](UserID)
+);

@@ -1,4 +1,4 @@
-const { getUser } = require('./userModels'); 
+const { getUser, editUser } = require('./userModels'); 
 
 exports.getUserByUsername = async (req, res) => {
     const username = req.body.username.toLowerCase();
@@ -16,3 +16,17 @@ exports.getUserByUsername = async (req, res) => {
         return res.status(500).json({ message: 'Server error' });
     }
 };
+
+exports.editUserByUsername = async (req, res) => {
+    const user = req.body;
+    try {
+        const result = await editUser(user);
+        if (result) {
+            return res.status(200).send('Chỉnh sửa thành công');
+        }   
+    }
+    catch (err) {
+        console.error('Error getting user:', err);
+        return res.status(500).json({ message: 'Server error' });
+    }
+}

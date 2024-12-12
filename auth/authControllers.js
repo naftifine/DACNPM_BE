@@ -4,13 +4,14 @@ const authMethod = require('./authMethods');
 const bcrypt = require('bcrypt');
 const randToken = require('rand-token');
 
+const SALT_ROUNDS = 10;
 
 exports.register = async (req, res) => {
 	const username = req.body.username.toLowerCase();
 	const user = await userModel.getUser(username);
 	if (user) res.status(409).send('Tên tài khoản đã tồn tại.');
 	else {
-		const hashPassword = bcrypt.hashSync(req.body.password, process.env.SALT_ROUNDS);
+		const hashPassword = bcrypt.hashSync(req.body.password, SALT_ROUNDS);
 		const newUser = {
 			username: username,
 			password: hashPassword,
@@ -31,16 +32,17 @@ exports.register = async (req, res) => {
 	}
 };
 
-exports.login = async (req, res) => {
+exports.login = async (req, res) => {	
 	const username = req.body.username.toLowerCase();
 	const password = req.body.password;
-
+	if (!username || !password) {
+		return res.status(400).send("Username and password are required.");
+	}
 	const user = await userModel.getUser(username);
 	if (!user) {
 		return res.status(401).send('Tên đăng nhập không tồn tại.');
 	}
-	// else return res.status(200).send(user.Username);
-	const isPasswordValid = bcrypt.compareSync(password, user.Passw);
+	const isPasswordValid = bcrypt.compareSync(password, user.password);
 	if (!isPasswordValid) {
 		return res.status(401).send('Mật khẩu không chính xác.');
 	}
@@ -62,11 +64,9 @@ exports.login = async (req, res) => {
 			.status(401)
 			.send('Đăng nhập không thành công, vui lòng thử lại.');
 	}
-	// else return res.status(200).send(accessToken);
 
 	let refreshToken = randToken.generate(64);
 
-	// console.log(user.refresh_token);
 	if (!user.refresh_token) {
 		await userModel.updateRefreshToken(user.Username, refreshToken);
 	} else {
