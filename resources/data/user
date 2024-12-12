@@ -1,0 +1,40 @@
+{ 
+    "data": [
+        {
+        "CCCD": "123456789012",
+        "Username": "nguyenvieta",
+        "Passw": "password123",
+        "DateOfBirth": "1990-05-01",
+        "Fullname": "Nguyễn Việt A",
+        "PhoneNumber": "0912345678",
+        "refresh_token": null
+        },
+        {
+        "CCCD": "987654321098",
+        "Username": "tranthib",
+        "Passw": "password456",
+        "DateOfBirth": "1985-03-12",
+        "Fullname": "Trần Thị B",
+        "PhoneNumber": "0987654321",
+        "refresh_token": null
+        },
+        {
+            "CCCD": "298761021098",
+            "Username": "luonganhT",
+            "Passw": "password382",
+            "DateOfBirth": "1985-03-12",
+            "Fullname": "Lương Anh Tú",
+            "PhoneNumber": "0987654321",
+            "refresh_token": null
+        },
+        {
+            "CCCD": "926375811798",
+            "Username": "LamtungB",
+            "Passw": "password092",
+            "DateOfBirth": "1985-03-12",
+            "Fullname": "Lâm Tùng Khùng",
+            "PhoneNumber": "0987654321",
+            "refresh_token": null
+        }
+    ]
+}
