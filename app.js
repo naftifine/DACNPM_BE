@@ -17,13 +17,14 @@ app.use(cors({
 const userRoutes = require('./users/userRoutes');
 const authRoutes = require('./auth/authRoutes');
 const chatRoutes = require('./chat/chatRoutes');
+const adminRoutes = require('./admin/adminRoutes');
 
 app.use(express.json());
 
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/chat', chatRoutes);
-
+app.use('/admin', adminRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server đang chạy tại http://localhost:${process.env.PORT}`);

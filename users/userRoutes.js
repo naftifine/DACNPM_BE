@@ -8,6 +8,8 @@ const isAuth = authMiddleware.isAuth;
 
 
 router.get('/profile', isAuth, userController.getUserByUsername);
+// router.get('/profile', isAuth, userController.getUser);
+
 router.post('/profile', isAuth, userController.editUserByUsername);
 
 module.exports = router;
