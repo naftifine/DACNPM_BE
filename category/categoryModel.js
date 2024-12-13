@@ -5,7 +5,7 @@ exports.getListCategory = async () => {
     const pool = await db();
     try {
         const query = `SELECT * FROM Category`;
-        const result = await pool.request.query(query);
+        const result = await pool.request().query(query);
         return result.recordset;
     }catch (err) {
         console.error('Không thể lấy thông tin của danh muc sản phẩm!', err);

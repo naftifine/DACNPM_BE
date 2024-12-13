@@ -6,7 +6,7 @@ exports.getAllProducts = async () => {
     const pool = await db();
     try {
         const query = `SELECT * FROM Products WHERE status != 'Deleted'`;
-        const result = await pool.request.query(query);
+        const result = await pool.request().query(query);
         return result.recordset;
     }catch (err) {
         console.error('Không thể lấy thông tin của tất cả sản phẩm!', err);

@@ -18,7 +18,9 @@ exports.getAllProducts = async (req, res) => {
         res.status(500).json(message);
     }
 };
-
+exports.searchProduct = async(req, res) => {
+    
+}
 exports.addProduct = async (req, res) => {
     const data = req.body.data;
     try {
