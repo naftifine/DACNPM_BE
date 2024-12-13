@@ -8,11 +8,7 @@ const http = require('http');
 const app = express();
 // const port = 3000; 
 
-app.use(cors({
-    origin: 'http://localhost:3000', // Frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Các phương thức được phép
-    credentials: true, // Cho phép gửi cookie, nếu cần
-  }));
+app.use(cors());
 
 
 const userRoutes = require('./users/userRoutes');

@@ -1,14 +1,15 @@
-﻿CREATE TABLE Users (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+﻿CREATE TABLE [users] (
+    userid INT IDENTITY(1,1) PRIMARY KEY,
     cccd VARCHAR(12) UNIQUE,
     username NVARCHAR(255) UNIQUE NOT NULL,
     password NVARCHAR(100) NOT NULL,
-    date_of_birth DATE,
+    dateofbirth DATE,
     fullname NVARCHAR(100) NOT NULL,
-    phone_number VARCHAR(16),
-	refresh_token VARCHAR(255) NULL,
-    CONSTRAINT CK_CCCD CHECK (LEN(CCCD) = 12), 
-    CONSTRAINT CK_PhoneNumber CHECK (LEN(phone_number) >= 10),
+    phonenumber VARCHAR(16),
+    refresh_token VARCHAR(255) NULL,
+    CONSTRAINT CK_CCCD CHECK (LEN(cccd) = 12), 
+    CONSTRAINT CK_phonenumber CHECK (LEN(phonenumber) >= 10)
+    -- image NVARCHAR(255),
 );
 CREATE TABLE Store (
     id INT IDENTITY(1,1) PRIMARY KEY,
@@ -26,26 +27,26 @@ CREATE TABLE Store (
 
 
 CREATE TABLE Category (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    categoryid INT IDENTITY(1,1) PRIMARY KEY,
     name NVARCHAR(100) UNIQUE NOT NULL,
-    image NVARCHAR(MAX) -- sql k có json
+    image NVARCHAR(MAX) 
 );
 
-CREATE TABLE Products (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+CREATE TABLE [products] (
+    productid INT IDENTITY(1,1) PRIMARY KEY,
     name NVARCHAR(100) NOT NULL,
     price INT NOT NULL,
     description NVARCHAR(MAX),
     remaining_amount INT DEFAULT 0,
     created_at DATETIME DEFAULT GETDATE(),
-	approved VARCHAR(30) DEFAULT 'pending' CHECK( approved IN ('accepted', 'rejected', 'pending')),
+	approved VARCHAR(30) DEFAULT 'pending' CHECK(approved IN ('accepted', 'rejected', 'pending')),
     image NVARCHAR(MAX), 
     attribute NVARCHAR(MAX), 
     status NVARCHAR(10) DEFAULT 'ForSale' CHECK (status IN ('ForSale', 'Sold', 'Deleted')) NOT NULL,
-    categoryID INT NOT NULL,
+    categoryid INT NOT NULL,
     userID INT,
-    FOREIGN KEY (categoryID) REFERENCES Category (id) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY (userID) REFERENCES Users (id) ON DELETE NO ACTION ON UPDATE CASCADE
+    FOREIGN KEY (categoryid) REFERENCES Category (categoryid) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY (userID) REFERENCES [users](userid) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Review (
@@ -61,31 +62,14 @@ CREATE TABLE Review (
 	ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-CREATE TABLE Conservation (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    created_at DATETIME DEFAULT GETDATE(),
-    title NVARCHAR(255)
-);
-
-CREATE TABLE Join_Conservation ( 
-    Conser_ID INT NOT NULL,
-    JoinID INT NOT NULL,
-    Con_Status NVARCHAR(10) CHECK (Con_Status IN ('Seen', 'NotSeen')),
-    PRIMARY KEY (Conser_ID, JoinID),
-    FOREIGN KEY (Conser_ID) REFERENCES Conservation(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (JoinID) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
 CREATE TABLE Message (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    date_send DATETIME DEFAULT GETDATE(),
+    date_send DATETIME NOT NULL,
     content NVARCHAR(MAX) NOT NULL,
-    senderID INT NOT NULL,
-    receiverID INT NOT NULL,
-    conserID INT NOT NULL,
-    FOREIGN KEY (senderID) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (receiverID) REFERENCES Users (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY (conserID) REFERENCES Conservation(id) ON DELETE CASCADE ON UPDATE CASCADE
+    sender NVARCHAR(MAX) NULL,
+    receiver NVARCHAR(MAX) NULL,
+    FOREIGN KEY (sender) REFERENCES [users](username),
+    FOREIGN KEY (receiver) REFERENCES [users](username)
 );
 
 CREATE TABLE Article (
