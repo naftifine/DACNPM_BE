@@ -61,7 +61,6 @@ CREATE TABLE Review (
 	ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-
 CREATE TABLE Conservation (
     id INT IDENTITY(1,1) PRIMARY KEY,
     created_at DATETIME DEFAULT GETDATE(),
@@ -105,5 +104,3 @@ CREATE TABLE Admin (
     password NVARCHAR(100) NOT NULL,
     refresh_token NVARCHAR(255) NULL
 );
-
-
