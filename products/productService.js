@@ -4,6 +4,13 @@ const productModel = require('./productModel');
 exports.getAllProducts = async () => {
     return await productModel.getAllProducts();
 };
+exports.search = async (name) => {
+    const data =  await productModel.getAllProducts(name);
+    const results = data.filter((product) =>
+        product.name.toLowerCase().includes(keyword.toLowerCase())
+    );
+    return results;
+}
 exports.addProduct = async (data) => {
     return await productModel.addProduct(data);
 };

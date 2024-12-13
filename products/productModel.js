@@ -29,7 +29,7 @@ exports.addProduct = async (data) => {
         .input('image', sql.NVarChar, data.image)
         .input('attribute', sql.NVarChar, data.attribute)
         .input('userID', sql.Int, data.userID)
-        .input('categoryID', sql.Int, data["cattegoryID"])
+        .input('categoryID', sql.Int, data.categoryid)
         .query(query);
     return result.recordset[0].ProductID;
 };

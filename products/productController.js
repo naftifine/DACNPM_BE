@@ -18,12 +18,36 @@ exports.getAllProducts = async (req, res) => {
         res.status(500).json(message);
     }
 };
-exports.searchProduct = async(req, res) => {
-    
+exports.search = async(req, res) => {
+    const name = req.query;
+    try {
+        const products = await productService.search(name);
+        if (producs.length === 0) {
+            const message = {
+                "success" : false,
+                "message" : "Không tìm thấy sản phẩm theo yêu cầu",
+                "data" : null
+            }
+            res.status(404).json(message)
+        }
+        const message = {
+            "success" : false,
+            "message" : "Tìm thấy sản phẩm yêu cầu",
+            "data" : products
+        }
+        res.status(200).json(message);
+    } catch (err) {
+        const message = {
+            "success" : false,
+            "message" : "Lấy dữ liệu của sản phẩm yêu cầu không thành công",
+            "data" : null
+        }
+        res.status(500).json(message);
+    }
 }
 exports.addProduct = async (req, res) => {
     const data = req.body.data;
-    try {
+    try {                             
         const productID = await productService.addProduct(data);
         data.productID = productID;
         const message = {
