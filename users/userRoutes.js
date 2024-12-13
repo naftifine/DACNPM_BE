@@ -6,7 +6,6 @@ const authMiddleware = require('../auth/authMiddlewares');
 
 const isAuth = authMiddleware.isAuth;
 
-
 router.post('/profile', isAuth, userController.getUserByUsername);
 router.post('/edit', isAuth, userController.editUserByUsername);
 
