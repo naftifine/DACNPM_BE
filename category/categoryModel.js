@@ -15,7 +15,7 @@ exports.getListCategory = async () => {
 exports.getProductbyCategory = async (categoryID) => {
     const pool = await db();
     try {
-        const query = `SELECT * FROM Products WHERE PC_ID = @CategoryID`;
+        const query = `SELECT * FROM Products WHERE id = @CategoryID`;
         const result = await pool.request()
         .input('CategoryID', sql.Int, categoryID)
         .query(query);
@@ -28,17 +28,16 @@ exports.getProductbyCategory = async (categoryID) => {
 exports.insertCategory = async (data) => {
     const pool = await db();
     const query = `
-        INSERT INTO Category (CName, Cate_Descr, Image)
-        VALUES (@CName, @Cate_Descr, @Image);
-        SELECT SCOPE_IDENTITY() AS CategoryID;
+        INSERT INTO Category (name, image)
+        VALUES (@name, @image);
+        SELECT SCOPE_IDENTITY() AS id;
     `;
     const result = await pool
         .request()
-        .input('CName', sql.NVarChar, data.CName)
-        .input('Cate_Descr', sql.NVarChar, data.Cate_Descr)
-        .input('Image', sql.NVarChar, data.Image)
+        .input('name', sql.NVarChar, data.name)
+        .input('image', sql.NVarChar, data.image    )
         .query(query);
-    return result.recordset[0].CategoryID;
+    return result.recordset[0].id;
 }
 
 exports.updateCategory = async (categoryID, data) => {
@@ -46,17 +45,15 @@ exports.updateCategory = async (categoryID, data) => {
     try {
         const query = `
             UPDATE Category 
-            SET CName = @CName, 
-            Cate_Desrc = @Cate_Desrc, 
-            Image = @Image, 
-            WHERE CategoryID = @categoryID;
+            SET name = @name, 
+            image = @image, 
+            WHERE id= @categoryID;
         `;
         const result = await pool 
             .request()
-            .input('CName', sql.NVarChar, data.CName)
-            .input('Cate_Desrce', sql.Int, data.Cate_Desrce)
-            .input('Image', sql.NVarChar, data.Image)
-            .input('categoryID', sql.NVarChar, categoryID)
+            .input('name', sql.NVarChar, data.name)
+            .input('image', sql.NVarChar, data.image)
+            .input('id', sql.NVarChar, categoryID)
             .query(query);
         return result.rowsAffected;
     }catch (err) {
@@ -68,7 +65,7 @@ exports.deleteCategory = async (categoryID) => {
     const pool = await db();
     try {
         const query = `DELETE FROM Category 
-            WHERE CategoryID = @categoryID;
+            WHERE id = @categoryID;
         `;
         const result = await pool
             .request()
@@ -83,7 +80,7 @@ exports.deleteCategory = async (categoryID) => {
 exports.checkCategoryExists = async (categoryId) => {
     const pool = await db() // Kết nối từ file cấu hình
     try {
-        const query = `SELECT COUNT(*) AS count FROM Category WHERE CategoryID = @CategoryID`;
+        const query = `SELECT COUNT(*) AS count FROM Category WHERE id = @CategoryID`;
         const result = await pool.request()
             .input('CategoryID', sql.Int, categoryId)
             .query(query);

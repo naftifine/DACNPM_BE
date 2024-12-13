@@ -16,7 +16,6 @@ app.use(cors({
 
 const userRoutes = require('./users/userRoutes');
 const authRoutes = require('./auth/authRoutes');
-
 const productRoutes = require('./products/productRoutes');
 const categoryRoutes = require('./category/categoryRoutes');
 const chatRoutes = require('./chat/chatRoutes');

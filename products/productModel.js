@@ -5,7 +5,7 @@ const sql = require('mssql');
 exports.getAllProducts = async () => {
     const pool = await db();
     try {
-        const query = `SELECT * FROM Products WHERE StatusPro != 'Deleted'`;
+        const query = `SELECT * FROM Products WHERE status != 'Deleted'`;
         const result = await pool.request.query(query);
         return result.recordset;
     }catch (err) {
@@ -16,22 +16,20 @@ exports.getAllProducts = async () => {
 exports.addProduct = async (data) => {
     const pool = await db();
     const query = `
-        INSERT INTO Products (PName, SellPrice, Pr_Descr, Amount, TimeUpload, ImagePd, Attribute, StatusPro, SellerID, PC_ID)
-        VALUES (@PName, @SellPrice, @Pr_Descr, @Amount, @TimeUpload, @ImagePd, @Attribute, @StatusPro, @SellerID, @PC_ID);
+        INSERT INTO Products (name, price, description, remaining_amount, image, attribute, userID, categoryID)
+        VALUES (@name, @price, @description, @remaining_amount, @image, @attribute, @userID, @categoryID);
         SELECT SCOPE_IDENTITY() AS ProductID;
     `;
     const result = await pool
         .request()
-        .input('PName', sql.NVarChar, data.PName)
-        .input('SellPrice', sql.Int, data.SellPrice)
-        .input('Pr_Descr', sql.NVarChar, data.Pr_Descr)
-        .input('Amount', sql.Int, data.Amount)
-        .input('TimeUpload', sql.DateTime, data.TimeUpload)
-        .input('ImagePd', sql.NVarChar, data.ImagePd)
-        .input('Attribute', sql.NVarChar, data.Attribute)
-        .input('StatusPro', sql.NVarChar, data.StatusPro)
-        .input('SellerID', sql.Int, data.SellerID)
-        .input('PC_ID', sql.Int, data["PC_ID"])
+        .input('name', sql.NVarChar, data.name)
+        .input('price', sql.Int, data.price)
+        .input('description', sql.NVarChar, data.description)
+        .input('remaining_amount', sql.Int, data.remaining_amount)
+        .input('image', sql.NVarChar, data.image)
+        .input('attribute', sql.NVarChar, data.attribute)
+        .input('userID', sql.Int, data.userID)
+        .input('categoryID', sql.Int, data["cattegoryID"])
         .query(query);
     return result.recordset[0].ProductID;
 };
@@ -41,28 +39,26 @@ exports.updateProduct = async (ProductID, data) => {
     try {
         const query = `
             UPDATE Produts 
-            SET PName = @PName, 
-            SellPrice = @SellPrice, 
-            Pr_Descr = @Pr_Descr, 
-            Amount = @Amount, 
-            TimeUpload = @TimeUpload, 
-            ImagePd = @ImagePd, 
-            Attribute = @Attribute, 
-            StatusPro = @StatusPro, 
-            PC_ID = @PC_ID
-            WHERE ProductID = @productID;
+            SET name = @name, 
+            price = @price, 
+            description = @description, 
+            remaining_amount = @remaining_amount, 
+            image = @image, 
+            attribute = @attribute, 
+            userID = @userID,
+            categoryID = @categoryID
+            WHERE id = @productID;
         `;
         const result = await pool 
             .request()
-            .input('PName', sql.NVarChar, data.PName)
-            .input('SellPrice', sql.Int, data.SellPrice)
-            .input('Pr_Descr', sql.NVarChar, data.Pr_Descr)
-            .input('Amount', sql.Int, data.Amount)
-            .input('TimeUpload', sql.DateTime, data.TimeUpload)
-            .input('ImagePd', sql.NVarChar, data.ImagePd)
-            .input('Attribute', sql.NVarChar, data.Attribute)
-            .input('StatusPro', sql.NVarChar, data.StatusPro)
-            .input('PC_ID', sql.Int, data["PC_ID"])
+            .input('name', sql.NVarChar, data.name)
+            .input('price', sql.Int, data.price)
+            .input('description', sql.NVarChar, data.description)
+            .input('remaining_amount', sql.Int, data.remaining_amount)
+            .input('image', sql.NVarChar, data.image)
+            .input('attribute', sql.NVarChar, data.attribute)
+            .input('userID', sql.Int, data.userID)
+            .input('categoryID', sql.Int, data.categoryID)
             .input('productID', sql.Int, ProductID)
             .query(query);
         return result.rowsAffected;
@@ -75,8 +71,8 @@ exports.deleteProduct = async (productID) => {
     const pool = await db();
     try {
         const query = `UPDATE Products 
-            SET StatusPro = 'Deleted'
-            WHERE ProductID = @productID;
+            SET status = 'Deleted'
+            WHERE id = @productID;
         `;
         const result = await pool
             .request()
@@ -91,7 +87,7 @@ exports.deleteProduct = async (productID) => {
 exports.checkProductExists = async (productId) => {
     const pool = await db() // Kết nối từ file cấu hình
     try {
-        const query = `SELECT COUNT(*) AS count FROM Products WHERE ProductID = @ProductID`;
+        const query = `SELECT COUNT(*) AS count FROM Products WHERE id = @ProductID`;
         const result = await pool.request()
             .input('ProductID', sql.Int, productId)
             .query(query);

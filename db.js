@@ -2,9 +2,9 @@ const sql = require('mssql');
 
 const config = {
     user: 'sa',      // Tên người dùng SQL Server
-    password: '123',  // Mật khẩu SQL Server
-    server: 'NAFTIFINE',        // SQL Server host
-    database: 'e_commerce',  // Tên cơ sở dữ liệu
+    password: 'Tung2303',  // Mật khẩu SQL Server
+    server: 'TUNG-DESKTOP230',        // SQL Server host
+    database: 'EWebsite',  // Tên cơ sở dữ liệu
     options: {
         encrypt: false,           // Đặt true nếu bạn dùng Azure hoặc cần mã hóa
         trustServerCertificate: true, // Yêu cầu nếu dùng chứng chỉ tự ký
