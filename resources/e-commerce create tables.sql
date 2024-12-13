@@ -76,29 +76,29 @@ CREATE TABLE Review (
 );
 
 
-CREATE TABLE Conservation (
-    Cons_ID INT IDENTITY(1,1) PRIMARY KEY,
-    Date_Start DATETIME NOT NULL,
-    Title NVARCHAR(255)
-);
+-- CREATE TABLE Conservation (
+--     Cons_ID INT IDENTITY(1,1) PRIMARY KEY,
+--     Date_Start DATETIME NOT NULL,
+--     Title NVARCHAR(255)
+-- );
 
-CREATE TABLE Join_Conservation (
-    Conser_ID INT NOT NULL,
-    JoinID INT NOT NULL,
-    Con_Status NVARCHAR(10) CHECK (Con_Status IN ('Seen', 'NotSeen')),
-    PRIMARY KEY (Conser_ID, JoinID),
-    FOREIGN KEY (Conser_ID) REFERENCES Conservation(Cons_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (JoinID) REFERENCES [users](UserID) ON DELETE CASCADE ON UPDATE CASCADE
-);
+-- CREATE TABLE Join_Conservation (
+--     Conser_ID INT NOT NULL,
+--     JoinID INT NOT NULL,
+--     Con_Status NVARCHAR(10) CHECK (Con_Status IN ('Seen', 'NotSeen')),
+--     PRIMARY KEY (Conser_ID, JoinID),
+--     FOREIGN KEY (Conser_ID) REFERENCES Conservation(Cons_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+--     FOREIGN KEY (JoinID) REFERENCES [users](UserID) ON DELETE CASCADE ON UPDATE CASCADE
+-- );
 
 CREATE TABLE Message (
-    Mess_ID INT IDENTITY(1,1) PRIMARY KEY,
-    Date_Send DATETIME NOT NULL,
-    Content NVARCHAR(MAX) NOT NULL,
-    SenderID INT NOT NULL,
-    Mes_ConID INT NOT NULL,
-    FOREIGN KEY (SenderID) REFERENCES [users](UserID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (Mes_ConID) REFERENCES Conservation(Cons_ID) ON DELETE CASCADE ON UPDATE CASCADE
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    date_send DATETIME DEFAULT GETDATE(),
+    content NVARCHAR(MAX) NOT NULL,
+    sender NVARCHAR(255) NOT NULL,
+    receiver NVARCHAR(255) NOT NULL,
+    FOREIGN KEY (sender) REFERENCES users(username),
+    FOREIGN KEY (receiver) REFERENCES users(username)
 );
 
 CREATE TABLE Article (
@@ -118,13 +118,3 @@ CREATE TABLE Admin (
     refresh_token NVARCHAR(255) NULL
 );
 
-
-CREATE TABLE Messages (
-    Mess_ID INT IDENTITY(1,1) PRIMARY KEY,
-    Date_Send DATETIME NOT NULL,
-    Content NVARCHAR(MAX) NOT NULL,
-    SenderID INT NULL,
-    ReceiverID INT NULL,
-    FOREIGN KEY (SenderID) REFERENCES [users](UserID),
-    FOREIGN KEY (ReceiverID) REFERENCES [users](UserID)
-);

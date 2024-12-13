@@ -6,7 +6,6 @@ const chatController = require('./chatControllers');
 
 const isAuth = authMiddleware.isAuth;
 
-router.get('/load', isAuth, chatController.getMessages);
-// router.put('/send', isAuth, chatController.sendMessages);
+router.post('/load', isAuth, chatController.getMessages);
 
 module.exports = router;

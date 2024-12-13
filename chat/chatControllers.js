@@ -13,7 +13,7 @@ exports.getMessages = async (req, res) => {
         const receiverID = await userModel.getUser(receiver);
 
 
-        const messages = await chatModel.getMessages(sendID.UserID, receiverID.UserID);
+        const messages = await chatModel.getMessages(sendID.username, receiverID.username);
         res.status(200).json(messages);
     } catch (error) {
         res.status(500).json({ error: error.message });
