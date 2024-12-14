@@ -4,10 +4,18 @@ const productModel = require('./productModel');
 exports.getAllProducts = async () => {
     return await productModel.getAllProducts();
 };
+exports.getProductById = async (productId) => {
+    return await productModel.getProductById(productId);
+};
+
+exports.getProductByUserId = async (userid) => {
+    return await productModel.getProductByUserId(userid);
+};
+
 exports.search = async (name) => {
-    const data =  await productModel.getAllProducts(name);
+    const data =  await productModel.getAllProducts();
     const results = data.filter((product) =>
-        product.name.toLowerCase().includes(keyword.toLowerCase())
+        product.name.toLowerCase().includes(name.toLowerCase())
     );
     return results;
 }

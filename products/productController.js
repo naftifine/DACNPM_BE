@@ -121,3 +121,74 @@ exports.deleteProduct = async (req, res) => {
     }
 };
 
+exports.getProductById = async (req, res) => {
+    try {
+        const productId  = req.query.productid;  // Lấy productId từ query params
+
+        if (!productId) {
+            return res.status(400).json({
+                success: false,
+                message: "productId is required",
+            });
+        }
+
+        // Gọi service để lấy chi tiết sản phẩm
+        const product = await productService.getProductById(productId);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product details fetched successfully",
+            data: product,
+        });
+    } catch (err) {
+        console.error('Error in detail controller:', err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching product details",
+            data: null,
+        });
+    }
+};
+
+exports.getProductByUserid = async (req, res) => {
+    try {
+        const userid  = req.query.userid;  
+
+        if (!userid) {
+            return res.status(400).json({
+                success: false,
+                message: "productId is required",
+            });
+        }
+
+        // Gọi service để lấy chi tiết sản phẩm
+        const product = await productService.getProductByUserId(userid);
+        
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product details fetched successfully",
+            data: product,
+        });
+    } catch (err) {
+        console.error('Error in detail controller:', err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching product details",
+            data: null,
+        });
+    }
+};

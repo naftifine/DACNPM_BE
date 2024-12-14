@@ -49,6 +49,19 @@ CREATE TABLE [products] (
     FOREIGN KEY (userID) REFERENCES [users](userid) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
+CREATE TABLE [ Order ] (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    productid INT NOT NULL,
+    userid INT NOT NULL, 
+    quantity INT NOT NULL, 
+    totalprice INT NOT NULL CHECK (totalprice > 0),
+    shippingfee INT NOT NULL,
+    shippingAddress NVARCHAR(MAX),
+    buyerNote NVARCHAR(MAX)
+    FOREIGN KEY (productid) REFERENCES products (id) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY (userid) REFERENCES users (userid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 CREATE TABLE Review (
     id INT IDENTITY(1,1) PRIMARY KEY,
     storeID INT NOT NULL,

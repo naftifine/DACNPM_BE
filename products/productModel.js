@@ -34,6 +34,52 @@ exports.addProduct = async (data) => {
     return result.recordset[0].ProductID;
 };
 
+exports.getProductById = async (productId) => {
+    const pool = await db();  // Kết nối tới DB
+    try {
+        // Câu truy vấn SQL để lấy sản phẩm theo productId
+        const query = 'SELECT * FROM Products WHERE productid = @productId';
+
+        // Thực thi câu truy vấn với tham số productId
+        const result = await pool.request()
+            .input('productId', sql.Int, productId) // Đặt giá trị cho tham số
+            .query(query);  // Thực thi câu truy vấn
+
+        // Nếu không có sản phẩm nào, trả về null
+        if (result.recordset.length === 0) {
+            return null;
+        }
+
+        // Trả về sản phẩm tìm thấy
+        return result.recordset[0];
+    } catch (error) {
+        console.error("Error fetching product by ID:", error);
+        throw new Error('Unable to fetch product details');
+    }
+};
+
+exports.getProductByUserId = async (userid) => {
+    const pool = await db();  // Kết nối tới DB
+    try {
+        // Câu truy vấn SQL để lấy sản phẩm theo productId
+        const query = 'SELECT * FROM Products WHERE userid = @userid';
+
+        // Thực thi câu truy vấn với tham số productId
+        const result = await pool.request()
+            .input('userid', sql.Int, userid) // Đặt giá trị cho tham số
+            .query(query);  // Thực thi câu truy vấn
+        if (result.recordset.length === 0) {
+            return null;
+        }
+
+        // Trả về sản phẩm tìm thấy
+        return result.recordset;
+    } catch (error) {
+        console.error("Error fetching product by ID:", error);
+        throw new Error('Unable to fetch product details');
+    }
+};
+
 exports.updateProduct = async (ProductID, data) => {
     const pool = await db();
     try {
