@@ -44,3 +44,30 @@ exports.sendMessages = async (sender, receiver, content) => {
         // throw new Error('Lỗi gửi tin nhắn');
     }
 }
+
+exports.getUser = async (username) => {
+    try {
+        const pool = await db();
+        const result = await pool.request()
+            .input('username', username)
+            .query(`
+                SELECT DISTINCT 
+                    CASE 
+                        WHEN sender = @username THEN receiver 
+                        ELSE sender 
+                    END AS username,
+                    Users.fullname
+                FROM Message
+                LEFT JOIN Users ON 
+                    Users.username = 
+                    (CASE 
+                        WHEN sender = @username THEN receiver 
+                        ELSE sender 
+                    END)
+                WHERE sender = @username OR receiver = @username;
+            `);
+        return result.recordset;
+    } catch (error) {
+        throw new Error('Error fetching messages: ' + error.message);
+    }
+};

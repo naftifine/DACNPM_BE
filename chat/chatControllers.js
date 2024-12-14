@@ -20,3 +20,19 @@ exports.getMessages = async (req, res) => {
     }
 };
 
+exports.getUsers = async (req, res) => {
+    const { username } = req.body;
+    try
+    {
+        if (!username) {
+            return res.status(400).json({ error: 'Username is required' });
+        }
+
+        const result = await chatModel.getUser(username);
+        res.status(200).json(result);
+    }
+    catch (error)
+    {
+        res.status(500).json({ error: error.message });
+    }
+};
