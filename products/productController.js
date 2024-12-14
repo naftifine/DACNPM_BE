@@ -1,4 +1,5 @@
- const productService = require('./productService');
+ const { getProductByUser_Id } = require('./productModel');
+const productService = require('./productService');
 
 exports.getAllProducts = async (req, res) => {
     try {
@@ -19,23 +20,25 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 exports.search = async(req, res) => {
-    const name = req.query;
+    const name = req.query.name;
     try {
         const products = await productService.search(name);
-        if (producs.length === 0) {
+        if (products) {            
             const message = {
-                "success" : false,
-                "message" : "Không tìm thấy sản phẩm theo yêu cầu",
-                "data" : null
+                "success" : true,
+                "message" : "Tìm thấy sản phẩm yêu cầu",
+                "data" : products
             }
-            res.status(404).json(message)
-        }
-        const message = {
+            res.status(200).json(message);
+        }   
+        else
+        {const message = {
             "success" : false,
-            "message" : "Tìm thấy sản phẩm yêu cầu",
-            "data" : products
+            "message" : "Không tìm thấy sản phẩm theo yêu cầu",
+            "data" : null
         }
-        res.status(200).json(message);
+        res.status(404).json(message)}
+        
     } catch (err) {
         const message = {
             "success" : false,
@@ -46,10 +49,11 @@ exports.search = async(req, res) => {
     }
 }
 exports.addProduct = async (req, res) => {
-    const data = req.body.data;
+    const data = req.body;
+    console.log(req.body);
     try {                             
-        const productID = await productService.addProduct(data);
-        data.productID = productID;
+        const product = await productService.addProduct(data);
+        console.log(product);
         const message = {
             "success" : true,
             "message" : "Thêm sản phẩm " + data.PName + " thành công!",
@@ -121,3 +125,75 @@ exports.deleteProduct = async (req, res) => {
     }
 };
 
+
+exports.getProductById = async (req, res) => {
+    try {
+        const productId  = req.query.productid;  // Lấy productId từ query params
+
+        if (!productId) {
+            return res.status(400).json({
+                success: false,
+                message: "productId is required",
+            });
+        }
+
+        // Gọi service để lấy chi tiết sản phẩm
+        const product = await productService.getProductById(productId);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product details fetched successfully",
+            data: product,
+        });
+    } catch (err) {
+        console.error('Error in detail controller:', err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching product details",
+            data: null,
+        });
+    }
+};
+
+exports.getProductByUserid = async (req, res) => {
+    try {
+        const userid  = req.query.userid;  
+
+        if (!userid) {
+            return res.status(400).json({
+                success: false,
+                message: "productId is required",
+            });
+        }
+
+        // Gọi service để lấy chi tiết sản phẩm
+        const product = await productService.getProductByUserId(userid);
+        
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product details fetched successfully",
+            data: product,
+        });
+    } catch (err) {
+        console.error('Error in detail controller:', err);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching product details",
+            data: null,
+        });
+    }
+};

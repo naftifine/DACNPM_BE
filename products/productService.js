@@ -4,12 +4,16 @@ const productModel = require('./productModel');
 exports.getAllProducts = async () => {
     return await productModel.getAllProducts();
 };
+exports.getProductById = async (productId) => {
+    return await productModel.getProductById(productId);
+};
+
+exports.getProductByUserId = async (userid) => {
+    return await productModel.getProductByUserId(userid);
+};
+
 exports.search = async (name) => {
-    const data =  await productModel.getAllProducts(name);
-    const results = data.filter((product) =>
-        product.name.toLowerCase().includes(keyword.toLowerCase())
-    );
-    return results;
+    return await productModel.searchByName(name);
 }
 exports.addProduct = async (data) => {
     return await productModel.addProduct(data);
