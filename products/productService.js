@@ -13,11 +13,7 @@ exports.getProductByUserId = async (userid) => {
 };
 
 exports.search = async (name) => {
-    const data =  await productModel.getAllProducts();
-    const results = data.filter((product) =>
-        product.name.toLowerCase().includes(name.toLowerCase())
-    );
-    return results;
+    return await productModel.searchByName(name);
 }
 exports.addProduct = async (data) => {
     return await productModel.addProduct(data);

@@ -23,6 +23,32 @@ exports.getUser = async (username) => {
         return null; 
     }
 }
+
+exports.getUserById = async (userid) => {
+    try {
+        const pool = await db(); 
+        const result = await pool.request()
+            .input('userid', sql.Int, userid) 
+            .query('SELECT * FROM users WHERE userid = @userid'); 
+
+        if (result.recordset.length > 0) {
+            const user = result.recordset[0];
+
+            // Định dạng lại ngày sinh (nếu có)
+            if (user.DateOfBirth) {
+                user.DateOfBirth = new Date(user.DateOfBirth).toISOString().split('T')[0];
+            }
+
+            return user; // Trả về thông tin người dùng
+        } else {
+            return null; // Không tìm thấy user
+        }
+    } catch (error) {
+        console.error('Error in getUserById:', error);
+        return null; // Trả về null trong trường hợp xảy ra lỗi
+    }
+};
+
 exports.createUser = async (newUser) => {
     try {
         const pool = await db();
